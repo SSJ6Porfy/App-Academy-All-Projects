@@ -1,0 +1,777 @@
+<html>
+
+  <head>
+    <title>00:00</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <link
+      href='http://fonts.googleapis.com/css?family=La+Belle+Aurore'
+      rel='stylesheet'
+      type='text/css'>
+
+    <style>
+
+      *, *::after {
+        box-sizing: border-box;
+        font-family: Helvetica, sans-serif;
+      }
+
+      h1 {
+        font-weight:100;
+      }
+
+      h3 {
+        font-style: italic;
+        font-size: 2em;
+      }
+
+      .logo {
+        text-align:center;
+        position:absolute;
+        bottom:10px;left:0;right:0;
+      }
+
+      /* begin clock styling */
+      .clockface {
+        width: 500px;
+        height: 500px;
+        border: thick solid black;
+        border-radius: 300px;
+        position:absolute;
+        top:50%;
+        left:30%;
+        margin-top:-250px;
+        margin-left: -250px;
+      }
+
+      .three, .six, .nine, .twelve {
+        position: absolute;
+        background-color: black;
+      }
+
+      .three {
+        height: 4px;
+        width: 30px;
+        right: 2px;
+        top:50%;
+        margin-top: -2px;
+      }
+
+      .six {
+        height: 30px;
+        width: 4px;
+        bottom: 2px;
+        left:50%;
+        margin-left: -2px;
+      }
+
+      .nine {
+        height: 4px;
+        width: 30px;
+        left: 2px;
+        top:50%;
+        margin-top: -2px;
+      }
+
+      .twelve {
+        height: 30px;
+        width: 4px;
+        top: 2px;
+        left:50%;
+        margin-left: -2px;
+      }
+
+      .middle-dot {
+        position:absolute;
+        top:50%;
+        left:50%;
+        width:20px;
+        height:20px;
+        margin-left:-10px;
+        margin-top:-10px;
+        background-color: black;
+        border-radius:10px;
+        z-index: 6;
+      }
+
+      #second-hand {
+        width: 2px;
+        height: 58%;
+        background-color: red;
+        transform-origin: 50% 82.5% 0px;
+        -webkit-transform-origin: 50% 82.5% 0px;
+        -moz-transform-origin: 50% 82.5% 0px;
+        -o-transform-origin: 50% 82.5% 0px;
+        position:absolute;
+
+        bottom: 40%;
+        left: 50%;
+        margin-left: -1px;
+        border-radius: 1px;
+        z-index:5;
+      }
+
+      #second-hand::after {
+        position:absolute;
+        top:100%;
+        left: 50%;
+        width:20px;
+        height: 20px;
+        border: 2px solid red;
+        content: '';
+        margin-left:-10px;
+        margin-top: -1px;
+        border-radius: 10px;
+      }
+
+      /* begin inlay styling */
+      .inlay {
+        width: 130px;
+        height: 130px;
+        border-radius: 65px;
+        border: 2px solid black;
+        top: 50px;
+        left: 50%;
+        margin-left: -65px;
+        position: absolute;
+      }
+
+      .short-timer * {
+        cursor: pointer;
+      }
+
+      .short-timer span:hover {
+        text-shadow: white 0 0 4px;
+      }
+
+      #minute-hand {
+        height: 60px;
+        width: 2px;
+        background-color: black;
+        transform-origin: 50% 100% 0px;
+        -webkit-transform-origin: 50% 100% 0px;
+        -moz-transform-origin: 50% 100% 0px;
+        -o-transform-origin: 50% 100% 0px;
+        position:absolute;
+        bottom:50%;
+        left: 50%;
+        margin-left: -1px;
+        z-index:3;
+      }
+
+      #minute-hand::after {
+        position:absolute;
+        width:8px;
+        height:8px;
+        background-color:black;
+        border-radius:4px;
+        content: '';
+        bottom:-4px;
+        left:-3px;
+      }
+
+      .five, .ten, .fifteen, .slice {
+        position: absolute;
+        -moz-border-radius: 65px;
+        -webkit-border-radius: 65px;
+        -o-border-radius: 65px;
+        border-radius: 65px;
+        left:0;
+        top:0;
+        bottom:0;
+        right:0;
+      }
+
+      .five, .ten, .fifteen {
+        clip: rect(0px, 130px, 130px, 63px);
+      }
+
+      .slice {
+         clip: rect(0px, 63px, 130px, 0px);
+         transform: rotateZ(120deg);
+         -webkit-transform: rotateZ(120deg);
+         -moz-transform: rotateZ(120deg);
+         -o-transform: rotateZ(120deg);
+       }
+
+      .ten {
+        transform: rotateZ(120deg);
+        -webkit-transform: rotateZ(120deg);
+        -moz-transform: rotateZ(120deg);
+        -o-transform: rotateZ(120deg);
+      }
+
+      .fifteen {
+        transform: rotateZ(240deg);
+        -webkit-transform: rotateZ(240deg);
+        -moz-transform: rotateZ(240deg);
+        -o-transform: rotateZ(240deg);
+      }
+
+      .five .slice {
+        background-color: lightseagreen;
+      }
+      .ten .slice {
+        background-color: peachpuff;
+      }
+      .fifteen .slice {
+        background-color: tomato;
+      }
+
+      .inlay span {
+        color: white;
+        font-size: 3em;
+        position:absolute;
+        z-index:3;
+
+        font-weight: 400;
+        font-family: 'La Belle Aurore', cursive;
+        line-height: 1em;
+      }
+
+      .number-five {
+        top: 18%;
+        right: 18%;
+      }
+
+      .number-fifteen {
+        top: 18%;
+        left: 10%;
+      }
+
+      .number-ten {
+        bottom: 0%;
+        left: 37%;
+      }
+      /* end inlay styling */
+
+
+      /* begin button styling */
+      .start, .reset {
+        display:table-cell;
+        vertical-align:middle;
+        cursor: pointer;
+        position: absolute;
+        top:50%;
+        color: black;
+        font-size: 1.6em;
+        font-weight: 100;
+        background-color: white;
+        height:120px;
+        width: 120px;
+        border: 2px solid black;
+        border-radius: 60px;
+        margin-top: -38px;
+      }
+
+      .start:hover, .reset:hover {
+        transform: translateY(-2px);
+        -webkit-transform: translateY(-2px);
+        -moz-transform: translateY(-2px);
+        -o-transform: translateY(-2px);
+        box-shadow: 0 3px 0 0 #cecece;
+      }
+
+      .start:active, .reset:active {
+        transform: translateY(3px);
+        -webkit-transform: translateY(3px);
+        -moz-transform: translateY(3px);
+        -o-transform: translateY(3px);
+        box-shadow: 0 -1px 0 0 #cecece;
+      }
+
+      .start {
+        left: 15%;
+        color: green;
+      }
+
+      .start.started {
+        color: tomato;
+      }
+
+      .start:after {
+        content: 'Start';
+      }
+
+      .start.started:after {
+        content: 'Stop';
+      }
+
+      .reset {
+        right: 15%;
+      }
+
+      button { outline: none; }
+      /* end button styling */
+
+
+
+      /* begin tip styling */
+      .pro-tips {
+        position: absolute;
+        left: 50%;
+        top:0;
+        bottom:0;
+        right:0;
+        padding-left:20px;
+        padding-right:20px;
+      }
+
+      .pro-tips h1 {
+        text-align:center;
+      }
+
+      .tips-holder {
+        position:absolute;
+        top:57px;
+        bottom:57px;
+        left:20px;
+        right:20px;
+        overflow:hidden;
+      }
+
+      .tips {
+        position:absolute;
+        height:100%;
+        top:100%;
+        right:0;
+        left:0;
+
+        transition: top 1s ease-out;
+      }
+
+      .tip {
+        height:100%;
+        width:100%;
+        display:table;
+        position:relative;
+      }
+
+      .tip::before {
+        content: 'Tip\A#' attr(num);
+        color: white;
+        /* width: 100px; */
+        /* height: 100px; */
+        background-color: orange;
+        border-radius: 92px;
+        display: inline-block;
+        /* text-align: center; */
+        font-size: 2em;
+        font-weight: 700;
+/*        font-style: italic;*/
+        transform: rotateZ(20deg);
+        -webkit-transform: rotateZ(20deg);
+        -moz-transform: rotateZ(20deg);
+        -o-transform: rotateZ(20deg);
+        position: absolute;
+        right: 5px;
+        white-space: pre;
+        padding: 24px 32px;
+        line-height: 35px;
+        overflow:hidden;
+        text-shadow: chocolate 1px 1px 0,
+          chocolate 2px 2px 0,
+          chocolate 3px 3px 0,
+          chocolate 4px 4px 0,
+          chocolate 5px 5px 0,
+          chocolate 6px 6px 0,
+          chocolate 7px 7px 0,
+          chocolate 8px 8px 0,
+          chocolate 9px 9px 0,
+          chocolate 10px 10px 0,
+          chocolate 11px 11px 0,
+          chocolate 12px 12px 0,
+          chocolate 13px 13px 0,
+          chocolate 14px 14px 0,
+          chocolate 15px 15px 0,
+          chocolate 16px 16px 0,
+          chocolate 17px 17px 0,
+          chocolate 18px 18px 0,
+          chocolate 19px 19px 0,
+          chocolate 20px 20px 0,
+          chocolate 21px 21px 0,
+          chocolate 22px 22px 0,
+          chocolate 23px 23px 0,
+          chocolate 24px 24px 0,
+          chocolate 25px 25px 0,
+          chocolate 26px 26px 0,
+          chocolate 27px 27px 0,
+          chocolate 28px 28px 0,
+          chocolate 29px 29px 0,
+          chocolate 30px 30px 0,
+          chocolate 31px 31px 0,
+          chocolate 32px 32px 0,
+          chocolate 33px 33px 0,
+          chocolate 34px 34px 0,
+          chocolate 35px 35px 0,
+          chocolate 36px 36px 0,
+          chocolate 37px 37px 0,
+          chocolate 38px 38px 0,
+          chocolate 39px 39px 0
+          ;
+      }
+
+      .tip > div {
+        display:table-cell;
+        vertical-align:middle;
+      }
+      /* end tip styling */
+
+
+
+    </style>
+  </head>
+  <body>
+
+
+
+    <div class='clockface'>
+
+      <button class='start'></button>
+      <button class='reset'>Reset</button>
+
+      <div class='middle-dot'></div>
+      <div class='three'></div>
+      <div class='six'></div>
+      <div class='nine'></div>
+      <div class='twelve'></div>
+
+      <div class='inlay'>
+
+        <div class='short-timer' data-min='5'>
+          <span class='number-five'>5</span>
+          <div class='five'><div class='slice'></div></div>
+        </div>
+
+        <div class='short-timer' data-min='10'>
+          <span class='number-ten'>10</span>
+          <div class='ten'><div class='slice'></div></div>
+        </div>
+
+        <div class='short-timer' data-min='15'>
+          <span class='number-fifteen'>15</span>
+          <div class='fifteen'><div class='slice'></div></div>
+        </div>
+
+        <div id='minute-hand'></div>
+      </div>
+
+      <div id='second-hand'></div>
+    </div>
+
+    <div class='pro-tips'>
+      <h1>
+        Pairing Pro-Tips
+      </h1>
+
+      <div class='tips-holder'>
+        <ol class='tips'>
+          <li class='tip'>
+            <div>
+                <h3>Brush your teeth.</h3>
+                We're in close quarters here.
+            </div>
+          </li>
+
+          <li class='tip'>
+            <div>
+              <h3>Shower.</h3>
+              See Pro-Tip #1.
+            </div>
+          </li>
+
+          <li class='tip'>
+            <div>
+              <h3>Follow the timer.</h3>
+              Make sure to switch every fifteen minutes.
+            </div>
+          </li>
+
+          <li class='tip'>
+            <div>
+              <h3>It's not a race.</h3>
+              It's more important for both partners to <em>understand</em>
+              the material than to jam something out.
+            </div>
+          </li>
+
+          <li class='tip'>
+            <div>
+              <h3>Ask 'Why?'</h3>
+              If you don't understand why something works or doesn't work,
+              say something!
+            </div>
+          </li>
+
+          <li class='tip'>
+            <div>
+              <h3>NEVER STEAL A LEARNING OPPORTUNITY.</h3>
+            </div>
+          </li>
+
+          <li class='tip'>
+            <div>
+              <h3>Don't touch the keyboard...</h3>
+              ...if you're not the driver.
+              <br><br>Learn to talk through your ideas.
+              <br><br>Love to talk through your ideas.
+            </div>
+          </li>
+
+          <li class='tip'>
+            <div>
+              <h3>Make it work, then make it work better.</h3>
+            </div>
+          </li>
+
+          <li class='tip'>
+            <div>
+              <h3>Wash your hands.</h3>
+              Sharing keyboards is a good way to spread germs.
+              <br><br>Washing your hands, as well as wiping down your keyboard / workstation, can help to prevent you from getting sick!
+            </div>
+          </li>
+
+          <li class='tip'>
+            <div>
+              <h3>Premature optimization is the enemy.</h3>
+            </div>
+          </li>
+
+          <li class='tip'>
+            <div>
+              <h3>Teaching your partner helps the both of you to learn.</h3>
+            </div>
+          </li>
+
+          <li class='tip'>
+            <div>
+              <h3>No seriously, brush your teeth.</h3>
+              You might enjoy coffee and cigarettes.
+              <br><br>Your partner might not.
+            </div>
+          </li>
+
+          <li class='tip'>
+            <div>
+              <h3>Improve your Google-Fu.</h3>
+            </div>
+          </li>
+
+          <li class='tip'>
+            <div>
+              <h3>Be patient.</h3>
+            </div>
+          </li>
+
+          <li class='tip'>
+            <div>
+              <h3>There's no "I" in Pair.</h3>
+              Use 'we' and 'us' when discussing work you've done, or plan to do.
+            </div>
+          </li>
+
+          <li class='tip'>
+            <div>
+              <h3>Boost your WPM.</h3>
+              <img
+                src='http://media.giphy.com/media/F7enXW5ijlgC4/giphy.gif'
+                height='100'
+                style='float:right;'>
+              Slow typing can make the day drag. But don't fret if you're slow - we've all been there!<br><br>
+              Improve your typing speed with <a href="http://play.typeracer.com/">typeracer</a>.<br><br>
+              And learn more keyboard shortcuts to make life easier.<br><br>
+
+              You will unlock your typing-potential in no time :)
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <div class='logo'>
+<!--           <img src='./aa-logo.png' height='50'> -->
+      </div>
+
+    </div>
+
+    <div style='position:absolute;bottom:2px;left:0;right:0;text-align:center;'>
+      <a href='https://github.com/drwrchrds/pairing_timer/tree/gh-pages'>
+        source code</a> -
+      by andrew richards <a href='http://www.drwrchrds.com'>site</a>
+      <a href='http://twitter.com/drwrchrds'>@drwrchrds</a>
+      <a href='http://github.com/drwrchrds'>github</a>
+    </div>
+
+    <script>
+      var Timer = function() {
+        this.$title = $('title');
+        this.$minuteHand = $('#minute-hand');
+        this.$secondHand = $('#second-hand');
+
+        this.$startButton = $('.start');
+        this.$resetButton = $('.reset');
+        this.$shortTimer = $('.short-timer');
+
+        this.lastTip = null;
+        this.started = false;
+        this.setUpEvents();
+      }
+
+      Timer.prototype.setUpEvents = function () {
+        this.$startButton.off();this.$resetButton.off();this.$shortTimer.off();
+        this.$startButton.removeClass('started');
+
+        this.$startButton.one('click', this.longTimer.bind(this));
+        this.$resetButton.on('click', this.resetTimer.bind(this));
+        this.$shortTimer.on('click', this.shortTimer.bind(this));
+
+        this.updateSecondHand(0);
+        this.updateMinuteHand(0);
+        this.updateDisplay(0);
+      }
+
+      // var oneSecondInterval;
+
+      Timer.prototype.startTimer = function (startTime, reset) {
+        console.log('startTimer');
+        if(!this.started || reset) {
+          if(typeof this.oneSecondInterval !== 'undefined') {
+            clearInterval(this.oneSecondInterval);
+          }
+
+          this.started = true;
+          this.startTime = startTime;
+
+          this.$startButton.addClass('started');
+          this.$startButton.off('click');
+          this.$startButton.one('click', this.pauseTimer.bind(this));
+
+          var timer = this;
+          this.oneSecondInterval = setInterval(function() {
+            var now = new Date();
+            var seconds = parseInt((now - timer.startTime)/1000);
+
+            timer.updateSecondHand(seconds);
+            timer.updateMinuteHand(seconds);
+            timer.updateDisplay(seconds);
+
+            if(seconds >= 900) {
+              timer.dingDingDing()
+
+            }
+          }, 300);
+        }
+      };
+
+      Timer.prototype.dingDingDing = function() {
+        clearInterval(this.oneSecondInterval);
+        alert("Time's Up!");
+
+        this.setUpEvents();
+      }
+
+      Timer.prototype.pauseTimer = function () {
+        console.log('pauseTimer');
+        this.$startButton.removeClass('started');
+        this.started = false;
+
+        clearInterval(this.oneSecondInterval);
+
+        var timeElapsed = new Date() - this.startTime;
+        // var fiveMinutesIn = new Date(new Date().getTime() - 10 * 60000)
+
+        var timer = this;
+        this.$startButton.one('click', function(){
+          var nextStartTime = new Date(new Date().getTime() - timeElapsed);
+          timer.startTimer(nextStartTime);
+        });
+
+        // clear interval
+        // store time-elapsed
+        // make a call back that will call startTimer with time elapsed
+      }
+
+      Timer.prototype.updateDisplay = function (seconds) {
+        var secDisplay = seconds % 60;
+        var minDisplay = parseInt(seconds / 60);
+        secDisplay = secDisplay < 10 ? '0' + secDisplay : secDisplay;
+        minDisplay = minDisplay < 10 ? '0' + minDisplay : minDisplay;
+
+        this.$title.text(minDisplay + ':' + secDisplay);
+      };
+
+      Timer.prototype.updateSecondHand = function (seconds) {
+        this.$secondHand.css('transform',
+              'rotateZ(' + (seconds * 6) + 'deg)');
+        this.$secondHand.css('-webkit-transform',
+              'rotateZ(' + (seconds * 6) + 'deg)');
+      };
+
+      Timer.prototype.updateMinuteHand = function (seconds) {
+        this.$minuteHand.css('transform',
+              'rotateZ(' + (seconds * 0.4) + 'deg)');
+        this.$minuteHand.css('-webkit-transform',
+              'rotateZ(' + (seconds * 0.4) + 'deg)');
+      };
+
+      Timer.prototype.longTimer = function () {
+        this.startTimer(new Date(), false);
+        this.showRandomTip();
+      };
+
+      Timer.prototype.resetTimer = function () {
+        this.oneSecondInterval &&
+              clearInterval(this.oneSecondInterval);
+
+        this.updateSecondHand(0);
+        this.updateMinuteHand(0);
+        this.updateDisplay(0);
+
+        this.startTimer(new Date(), true);
+        this.showRandomTip();
+      };
+
+      Timer.prototype.shortTimer = function (event) {
+        var minutes = $(event.currentTarget).data('min');
+
+        switch(minutes) {
+        case 5:
+          var tenMinutesIn = new Date(new Date().getTime() - 10 * 60000);
+          this.startTimer(tenMinutesIn, true);
+          break;
+        case 10:
+          var fiveMinutesIn = new Date(new Date().getTime() - 5 * 60000);
+          this.startTimer(fiveMinutesIn, true);
+          break;
+        case 15:
+          this.startTimer(new Date(), true);
+          break;
+        }
+
+        this.showRandomTip();
+      }
+
+      Timer.prototype.showRandomTip = function () {
+        this.$tips = this.$tips || $('.tips');
+        this.numTips = this.numTips || this.$tips.children().length;
+        var randTip = Math.floor(Math.random() * this.numTips);
+
+        if(randTip === this.lastTip) {
+          this.showRandomTip();
+        } else {
+          this.$tips.css('top', (randTip * -100) + '%');
+          this.lastTip = randTip;
+        }
+      }
+
+      $(function () {
+
+        // add 'num' attribute to all tips
+        $('.tip').each(function(idx, tip) {
+          $(tip).attr('num', idx + 1);
+        });
+
+        new Timer();
+      })
+    </script>
+  </body>
+</html>
