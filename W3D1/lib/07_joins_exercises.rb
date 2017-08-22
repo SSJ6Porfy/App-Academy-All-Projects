@@ -134,8 +134,8 @@ def prolific_actors
   # Obtain a list in alphabetical order of actors who've had at least 15
   # starring roles.
   execute(<<-SQL)
-
-
+    
+  SQL
 end
 
 def films_by_cast_size
