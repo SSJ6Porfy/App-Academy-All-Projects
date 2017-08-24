@@ -1,34 +1,43 @@
 .main-nav {
-
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
 }
 
 .left-nav > ul,
 .right-nav > ul {
-
+  display: flex;
+  align-items: center;
 }
 
 .left-nav > ul > li {
-
+  font-size: 14px;
+  font-family: $sans-serif;
+  text-transform: uppercase;
+  margin-left: 20px;
+  font-weight: bold;
+  padding: 5px 8px;
 }
 
 .right-nav > ul > li {
-
+  margin: 5px;
 }
 
 .right-nav > ul > li:last-of-type {
-
+  position: relative;
+  padding: 5px 8px;
 }
 
 .left-nav > ul > li:hover,
 .right-nav > ul > li:last-of-type:hover {
-
+  background-color: $lightest-gray;
 }
 
-.left-nav span {
-
+.left-nav span  {
+  margin: 10px;
 }
-
 
 .right-nav i {
-
+  font-size: 16px;
+  background: $lightest-gray;
 }
