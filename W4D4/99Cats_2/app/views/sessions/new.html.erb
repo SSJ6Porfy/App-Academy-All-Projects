@@ -1,0 +1,17 @@
+
+
+<form action="<%= action_url %>" method="post">
+  <input type="hidden" name="authenticity_token" value=" <%= form_authenticity_token %> ">
+
+  <label for="user_name">Username:</label>
+  <input type="text" name="user[user_name]" value="" id="user_name">
+  <br>
+  <label for="password">Password:</label>
+  <input type="text" name="user[password]" value="" id="password">
+  <br>
+  <% if current_user %>
+    <%= button_to 'Log Out', new_session_url, method: :delete %>
+  <% else %>
+    <%= button_to 'Log In', cats_url, method: :index %>
+  <% end %>
+</form>

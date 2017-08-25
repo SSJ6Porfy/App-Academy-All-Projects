@@ -1,0 +1,17 @@
+
+<% if action == :new %>
+  <% action_url = new_user_url %>
+<% end %>
+<% %>
+
+<form action="<%= session_url %>" method="post">
+  <input type="hidden" name="authenticity_token" value=" <%= form_authenticity_token %> ">
+
+  <label for="user_name">Username:</label>
+  <input type="text" name="user[user_name]" value="" id="user_name">
+  <br>
+  <label for="password">Password:</label>
+  <input type="text" name="user[password]" value="" id="password">
+  <br>
+
+</form>
