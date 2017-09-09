@@ -1,0 +1,42 @@
+body {
+  font-family: "Open Sans";
+}
+
+.ClockSection {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 15px;
+}
+
+.ClockContainer {
+  background: orange;
+  color: white;
+  border: 2px solid black;
+  width: 40%;
+}
+
+.WeatherContainer {
+  background: green;
+  color: white;
+  border: 2px solid black;
+  width: 40%;
+  padding: 10px;
+}
+
+.AutoCompleteContainer {
+  background: blue;
+  color: white;
+  border: 2px solid black;
+  width: 40%;
+  padding: 10px;
+}
+
+.AutoCompleteContainer li:hover {
+  cursor: pointer;
+}
+
+.widgets {
+  display: flex;
+  justify-content: flex-start;
+}
