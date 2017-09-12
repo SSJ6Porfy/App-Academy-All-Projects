@@ -1,5 +1,5 @@
 body {
-  font-family: "Open Sans";
+  font-family: 'Righteous', cursive;
 }
 
 .ClockSection {
@@ -39,4 +39,45 @@ body {
 .widgets {
   display: flex;
   justify-content: flex-start;
+}
+
+.header-row {
+  display: flex;
+  margin: 0px;
+}
+
+.header-row h1 {
+  flex-direction: row;
+  padding: 9px 20px 9px 20px;
+  border: 2px solid black;
+  border-top-left-radius: 1em;
+  border-top-right-radius: 1em;
+  margin: 0px;
+  background-color: rgb(147, 147, 255);
+}
+
+.header-row h1:active {
+  border-bottom: none;
+}
+
+.TabContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.ArticleContainer {
+  display: flex;
+  margin: 0px 40px;
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+  border-bottom: 2px solid black;
+  width: 333px;
+  height: 280px;
+  justify-content: center;
+  align-items: center;
+  background: rgb(147, 147, 255);
+}
+
+.ArticleContainer article {
+  font-size: 25px;
 }
